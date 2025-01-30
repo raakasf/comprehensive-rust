@@ -36,10 +36,15 @@ else
     fi
 fi
 
+# Enable mdbook-pandoc to build PDF version of the course
+export MDBOOK_OUTPUT__PANDOC__DISABLED=false
+
 mdbook build -d "$dest_dir"
-if [ -f "$dest_dir/pandoc/pdf/comprehensive-rust.pdf" ]; then
-    mv "$dest_dir/pandoc/pdf/comprehensive-rust.pdf" "$dest_dir/html/"
-fi
+
+# Disable the redbox button in built versions of the course
+echo '// Disabled in published builds, see build.sh' > "${dest_dir}/html/theme/redbox.js"
+
+mv "$dest_dir/pandoc/pdf/comprehensive-rust.pdf" "$dest_dir/html/"
 (cd "$dest_dir/exerciser" && zip --recurse-paths ../html/comprehensive-rust-exercises.zip comprehensive-rust-exercises/)
 
 echo "::endgroup::"

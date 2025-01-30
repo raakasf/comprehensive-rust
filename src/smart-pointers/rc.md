@@ -19,12 +19,28 @@ fn main() {
 }
 ```
 
+Each `Rc` points to the same shared data structure, containing strong and weak
+pointers and the value:
+
+```bob
+ Stack                     Heap
+.- - - - - - - -.     .- - - - - - - - - - - - - - - - -.
+:               :     :                                 :
+:     +-----+   :     :   +-----------+-------------+   :
+:  a: | o---|---:--+--:-->|  count: 2 |  value: 10  |   :
+:     +-----+   :  |  :   +-----------+-------------+   :
+:  b: | o---|---:--+  :                                 :
+:     +-----+   :     `- - - - - - - - - - - - - - - - -'
+:               :     
+`- - - - - - - -'
+```
+
 - See [`Arc`][2] and [`Mutex`][3] if you are in a multi-threaded context.
 - You can _downgrade_ a shared pointer into a [`Weak`][4] pointer to create
   cycles that will get dropped.
 
 [1]: https://doc.rust-lang.org/std/rc/struct.Rc.html
-[2]: ../concurrency/shared_state/arc.md
+[2]: ../concurrency/shared-state/arc.md
 [3]: https://doc.rust-lang.org/std/sync/struct.Mutex.html
 [4]: https://doc.rust-lang.org/std/rc/struct.Weak.html
 
